@@ -13,10 +13,10 @@ binobjects = rhydict
 
 all: bin
 
-rhydict : main.o data.h data.o
+rhydict : main.o data.h data.o exit_codes.h
 	$(CC) -o rhydict main.o data.o
 
-main.o : main.c data.h data.o
+main.o : main.c data.h data.o exit_codes.h
 	$(CC) -c main.c
 
 data.o : data.c data.h
