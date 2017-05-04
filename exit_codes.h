@@ -15,3 +15,5 @@
 #define SUCCESS 0
 #define BAD_OPT 1
 #define NO_OPTARG 2
+#define INSUFF_MEM 3
+#define NO_WORD 4

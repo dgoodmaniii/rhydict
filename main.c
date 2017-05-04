@@ -22,12 +22,17 @@ extern prondict dict[];
 int main(int argc, char **argv)
 {
 	int i;
+	int len;
 	char c;
-	int numsylls = 1;
+	int numphones = 0;
+	int numsyllmatch = 1;
 	int perfrhyme = 1;
+	char *word = NULL;
+	char *pronword = NULL;
+	char **syllables;
 
 	opterr = 0;
-	while ((c = getopt(argc,argv,"Vn:i")) != -1) {
+	while ((c = getopt(argc,argv,"Vn:iw:")) != -1) {
 		switch (c) {
 		case 'V':
 			printf("rhydict v0.9\n");
@@ -50,7 +55,7 @@ int main(int argc, char **argv)
 					break;
 			}
 			if (i == strlen(optarg)) {
-				numsylls = atoi(optarg);
+				numsyllmatch = atoi(optarg);
 			} else {
 				fprintf(stderr,"rhydict:  error:  argument of "
 					"\"-n\" must be an integer; value entered was "
@@ -60,8 +65,11 @@ int main(int argc, char **argv)
 		case 'i':
 			perfrhyme = 0;
 			break;
+		case 'w':
+			word = optarg;
+			break;
 		case '?':
-			if (optopt == 'n') {
+			if ((optopt == 'n') || (optopt == 'w')) {
 				fprintf(stderr,"rhydict:  error:  option \"-n\" "
 					"requires an integer as an argument\n");
 				exit(NO_OPTARG);
@@ -71,20 +79,102 @@ int main(int argc, char **argv)
 			exit(BAD_OPT);
 		}
 	}
-	
+	if (word == NULL) {
+		fprintf(stderr,"rhydict:  error:  give rhydict a word "
+			"to rhyme with \"-w\"\n");
+		exit(NO_WORD);
+	}
+	for (i = 0; strcmp(dict[i].word,word); ++i);
+	len = strlen(dict[i].pron);
+	pronword = malloc((len * sizeof(char)) + 1);
+	strcpy(pronword,dict[i].pron);
+	char *token;
+	token = strtok(pronword," ");
+	i = 0;
+	syllables = malloc(13 * sizeof(char *));
+	while (token != NULL) {
+		numphones++;
+		syllables[i] = malloc((strlen(token) + 1) * sizeof(char));
+		strip_stress(token);
+		strcpy(syllables[i],token);
+		token = strtok(NULL," ");
+		++i;
+	}
+	syllables[i] = NULL; numphones--;
+	compwords(syllables,numphones,numsyllmatch,perfrhyme);
 
-/*	for (i = 0; strcmp(dict[i].word,"00"); ++i) {
-		if (!strcmp(dict[i].word,"rock"))
-			printf("Found it!\n");
-	}*/
-/*	for (i = 0; strcmp(symbs[i].syll,"00"); ++i) {
-		printf("%s ",symbs[i].syll);
-	}
-	for (i = 0; strcmp(phon[i].syll,"00"); ++i) {
-		printf("(%s %s) ",phon[i].syll,phon[i].type);
-	}
-	for (i = 0; strcmp(dict[i].word,"00"); ++i) {
-		printf("(%s %s)\n",dict[i].word,dict[i].pron);
-	}*/
+
+	free(pronword);
+	for (i = 0; syllables[i] != NULL; ++i)
+		free(syllables[i]);
+	free(syllables);
 	return 0;
+}
+
+int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
+{
+	char *token;
+	char **syllables;
+	int i, j, k, len = 0;
+	char *pronword;
+	int numphones = 0;
+
+	for (i = 0; strcmp(dict[i].pron,"00"); ++i) {
+		numphones = 0;
+		len = strlen(dict[i].pron);
+		pronword = malloc((len * sizeof(char)) + 1);
+		strcpy(pronword,dict[i].pron);
+		token = strtok(pronword," ");
+		j = 0;
+		syllables = malloc(36 * sizeof(char *));
+		while (token != NULL) {
+			numphones++;
+			syllables[j] = malloc((strlen(token) + 1) * sizeof(char));
+			strip_stress(token);
+			strcpy(syllables[j],token);
+			token = strtok(NULL," ");
+			++j;
+		}
+		syllables[j] = NULL; numphones--;
+		k = numsylls;
+		while (!strcmp(syllables[numphones],s[k])) {
+			if (isvowel(syllables[numphones]) == 0) {
+				printf("%s\n",dict[i].word);
+				break;
+			}
+			if ((numphones == 0) || (k == 0))
+				break;
+			else
+				numphones--; k--;
+		}
+		free(pronword);
+		for (j = 0; syllables[j] != NULL; ++j)
+			free(syllables[j]);
+		free(syllables);
+	}
+}
+
+int strip_stress(char *s)
+{
+	int i;
+	for (i = 0; s[i] != '\0'; ++i) {
+		if (isdigit(s[i]))
+			s[i] = '\0';
+	}
+	return 0;
+}
+
+/* returns 0 if it's a vowel, 1 if not */
+int isvowel(char *s)
+{
+	int len; int i;
+	char *t = s;
+
+	len = strlen(t) - 1;
+	strip_stress(t);
+	for (i = 0; strcmp(phon[i].syll,"00"); ++i) {
+		if (!strcmp(phon[i].syll,t) && !strcmp(phon[i].type,"vowel"))
+			return 0;
+	}
+	return 1;
 }
