@@ -9,17 +9,26 @@
  */
 
 #include<stdio.h>
+#include<string.h>
 #include"data.h"
 
 extern syms symbs[];
+extern phones phon[];
+extern prondict dict[];
 
 int main(int argc, char **argv)
 {
 	int n; int i;
 
 	n = 85;
-	for (i = 0; i < n; ++i) {
-		printf("%s\n",symbs[i].syll);
+	for (i = 0; strcmp(symbs[i].syll,"00"); ++i) {
+		printf("%s ",symbs[i].syll);
+	}
+	for (i = 0; strcmp(phon[i].syll,"00"); ++i) {
+		printf("(%s %s) ",phon[i].syll,phon[i].type);
+	}
+	for (i = 0; strcmp(dict[i].word,"00"); ++i) {
+		printf("(%s %s)\n",dict[i].word,dict[i].pron);
 	}
 	return 0;
 }

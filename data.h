@@ -12,3 +12,13 @@
 typedef struct {
 	char syll[4];
 } syms;
+
+typedef struct {
+	char syll[4];
+	char type[12];
+} phones;
+
+typedef struct {
+	char *word;
+	char *pron;
+} prondict;
