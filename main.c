@@ -1,5 +1,4 @@
-/*
- * +AMDG  This document was begun on 3 May 1201, the feast
+/* * +AMDG  This document was begun on 3 May 1201, the feast
  * of St. Juvenal, EC, and it is humbly dedicated to him and
  * to the Immaculate Heart of Mary for their prayers, and to
  * the Sacred Heart of Jesus for His mercy.
@@ -18,6 +17,9 @@
 extern syms symbs[];
 extern phones phon[];
 extern prondict dict[];
+/* option variables */
+int numsyllmatch = 1;
+int perfrhyme = 1;	/* 0 if imperfect rhyme is desired, 1 if not */
 
 int main(int argc, char **argv)
 {
@@ -25,14 +27,12 @@ int main(int argc, char **argv)
 	int len;
 	char c;
 	int numphones = 0;
-	int numsyllmatch = 1;
-	int perfrhyme = 1;
 	char *word = NULL;
 	char *pronword = NULL;
 	char **syllables;
 
 	opterr = 0;
-	while ((c = getopt(argc,argv,"Vn:iw:")) != -1) {
+	while ((c = getopt(argc,argv,"Vn:iw:l:")) != -1) {
 		switch (c) {
 		case 'V':
 			printf("rhydict v0.9\n");
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	strcpy(pronword,dict[i].pron);
 	syllables = malloc(13 * sizeof(char *));
 	numphones = syllabify(syllables,pronword);
-	compwords(syllables,numphones,numsyllmatch,perfrhyme);
+	compwords(syllables,numphones);
 	free(pronword);
 	for (i = 0; syllables[i] != NULL; ++i)
 		free(syllables[i]);
@@ -122,7 +122,7 @@ int syllabify(char **sa, char *s)
 	return numphones;
 }
 
-int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
+int compwords(char **s, int numsylls)
 {
 	char *token; char **syllables;
 	int i, j, k, len, numphones = 0;
@@ -136,7 +136,7 @@ int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
 		syllables = malloc(36 * sizeof(char *));
 		numphones = syllabify(syllables,pronword);
 		k = numsylls;
-		do_compare(syllables,s,numsylls,numsyllmatch,dict[i].word,perfrhyme);
+		do_compare(syllables,s,numsylls,dict[i].word);
 		free(pronword);
 		for (j = 0; syllables[j] != NULL; ++j)
 			free(syllables[j]);
@@ -144,8 +144,7 @@ int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
 	}
 }
 
-int do_compare(char **s, char **t, int numsylls, int
-		syllsmatch, char *r, int perfrhyme)
+int do_compare(char **s, char **t, int numsylls, char *r)
 {
 	int i;
 	int j = 1;
@@ -153,17 +152,18 @@ int do_compare(char **s, char **t, int numsylls, int
 	for (i = 0; s[i] != NULL; ++i); --i;
 	while (!strcmp(s[i],t[numsylls])) {
 		if (isvowel(s[i]) == 0) {
-			if (j == syllsmatch) {
+			if (j == numsyllmatch) {
 				printf("%s\n",r);
 				break;
 			} else {
 				++j;
 			}
 		}
-		if ((i == 0) || (numsylls == 0))
+		if ((i == 0) || (numsylls == 0)) {
 			break;
-		else
+		} else {
 			i--; numsylls--;
+		}
 	}
 }
 
