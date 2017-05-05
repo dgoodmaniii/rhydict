@@ -90,10 +90,7 @@ int main(int argc, char **argv)
 	strcpy(pronword,dict[i].pron);
 	syllables = malloc(13 * sizeof(char *));
 	numphones = syllabify(syllables,pronword);
-	for (i = 0; syllables[i] != NULL; ++i)
-		printf("%s ",syllables[i]);
 	compwords(syllables,numphones,numsyllmatch,perfrhyme);
-
 	free(pronword);
 	for (i = 0; syllables[i] != NULL; ++i)
 		free(syllables[i]);
@@ -121,11 +118,9 @@ int syllabify(char **sa, char *s)
 
 int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
 {
-	char *token;
-	char **syllables;
-	int i, j, k, len = 0;
+	char *token; char **syllables;
+	int i, j, k, len, numphones = 0;
 	char *pronword;
-	int numphones = 0;
 
 	for (i = 0; strcmp(dict[i].pron,"00"); ++i) {
 		numphones = 0;
@@ -135,20 +130,28 @@ int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
 		syllables = malloc(36 * sizeof(char *));
 		numphones = syllabify(syllables,pronword);
 		k = numsylls;
-		while (!strcmp(syllables[numphones],s[k])) {
-			if (isvowel(syllables[numphones]) == 0) {
-				printf("%s\n",dict[i].word);
-				break;
-			}
-			if ((numphones == 0) || (k == 0))
-				break;
-			else
-				numphones--; k--;
-		}
+		do_compare(syllables,s,numsylls,numsyllmatch,dict[i].word,perfrhyme);
 		free(pronword);
 		for (j = 0; syllables[j] != NULL; ++j)
 			free(syllables[j]);
 		free(syllables);
+	}
+}
+
+int do_compare(char **s, char **t, int numsylls, int
+		syllsmatch, char *r, int perfrhyme)
+{
+	int i;
+	for (i = 0; s[i] != NULL; ++i); --i;
+	while (!strcmp(s[i],t[numsylls])) {
+		if (isvowel(s[i]) == 0) {
+			printf("%s\n",r);
+			break;
+		}
+		if ((i == 0) || (numsylls == 0))
+			break;
+		else
+			i--; numsylls--;
 	}
 }
 
