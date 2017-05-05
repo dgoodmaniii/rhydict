@@ -88,27 +88,35 @@ int main(int argc, char **argv)
 	len = strlen(dict[i].pron);
 	pronword = malloc((len * sizeof(char)) + 1);
 	strcpy(pronword,dict[i].pron);
-	char *token;
-	token = strtok(pronword," ");
-	i = 0;
 	syllables = malloc(13 * sizeof(char *));
-	while (token != NULL) {
-		numphones++;
-		syllables[i] = malloc((strlen(token) + 1) * sizeof(char));
-		strip_stress(token);
-		strcpy(syllables[i],token);
-		token = strtok(NULL," ");
-		++i;
-	}
-	syllables[i] = NULL; numphones--;
+	numphones = syllabify(syllables,pronword);
+	for (i = 0; syllables[i] != NULL; ++i)
+		printf("%s ",syllables[i]);
 	compwords(syllables,numphones,numsyllmatch,perfrhyme);
-
 
 	free(pronword);
 	for (i = 0; syllables[i] != NULL; ++i)
 		free(syllables[i]);
 	free(syllables);
 	return 0;
+}
+
+int syllabify(char **sa, char *s)
+{
+	char *token;
+	token = strtok(s," ");
+	int numphones = 0;
+	int i = 0;
+	while (token != NULL) {
+		numphones++;
+		sa[i] = malloc((strlen(token) + 1) * sizeof(char));
+		strip_stress(token);
+		strcpy(sa[i],token);
+		token = strtok(NULL," ");
+		++i;
+	}
+	sa[i] = NULL; numphones--;
+	return numphones;
 }
 
 int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
@@ -124,18 +132,8 @@ int compwords(char **s, int numsylls, int numsyllmatch, int perfrhyme)
 		len = strlen(dict[i].pron);
 		pronword = malloc((len * sizeof(char)) + 1);
 		strcpy(pronword,dict[i].pron);
-		token = strtok(pronword," ");
-		j = 0;
 		syllables = malloc(36 * sizeof(char *));
-		while (token != NULL) {
-			numphones++;
-			syllables[j] = malloc((strlen(token) + 1) * sizeof(char));
-			strip_stress(token);
-			strcpy(syllables[j],token);
-			token = strtok(NULL," ");
-			++j;
-		}
-		syllables[j] = NULL; numphones--;
+		numphones = syllabify(syllables,pronword);
 		k = numsylls;
 		while (!strcmp(syllables[numphones],s[k])) {
 			if (isvowel(syllables[numphones]) == 0) {
