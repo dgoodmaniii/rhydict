@@ -17,3 +17,4 @@
 #define NO_OPTARG 2
 #define INSUFF_MEM 3
 #define NO_WORD 4
+#define WORD_NOT_FOUND 5

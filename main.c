@@ -84,7 +84,13 @@ int main(int argc, char **argv)
 			"to rhyme with \"-w\"\n");
 		exit(NO_WORD);
 	}
-	for (i = 0; strcmp(dict[i].word,word); ++i);
+	for (i = 0; strcmp(dict[i].word,word); ++i) {
+		if (!strcmp(dict[i].word,"00")) {
+			fprintf(stderr,"rhydict:  error:  word \"%s\" "
+				"was not found in the dictionary\n",word);
+			exit(WORD_NOT_FOUND);
+		}
+	}
 	len = strlen(dict[i].pron);
 	pronword = malloc((len * sizeof(char)) + 1);
 	strcpy(pronword,dict[i].pron);
@@ -142,11 +148,17 @@ int do_compare(char **s, char **t, int numsylls, int
 		syllsmatch, char *r, int perfrhyme)
 {
 	int i;
+	int j = 1;
+
 	for (i = 0; s[i] != NULL; ++i); --i;
 	while (!strcmp(s[i],t[numsylls])) {
 		if (isvowel(s[i]) == 0) {
-			printf("%s\n",r);
-			break;
+			if (j == syllsmatch) {
+				printf("%s\n",r);
+				break;
+			} else {
+				++j;
+			}
 		}
 		if ((i == 0) || (numsylls == 0))
 			break;
