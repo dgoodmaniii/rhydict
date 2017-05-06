@@ -1,0 +1,73 @@
+." +AMDG
+." Process with:
+." groff -man -Tascii rhydict.1
+.TH rhydict 1 "May 2017" dgoodmaniii rhydict
+.SH NAME
+rhydict \- a command-line rhyming dictionary
+.SH SYNOPSIS
+.B rhydict
+[\fB\-V\fR]
+[\fB\-i\fR]
+[\fB\-n\fR \fInumber of syllables to rhyme\fR]
+[\fB\-l\fR \fIlength of words to return\fR]
+.SH DESCRIPTION
+.B rhydict
+A simple command-line rhyming dictionary.  Options for how
+many sylalbles you want to rhyme; whether imperfect rhymes
+will be returned; how long you'd like the returned words to
+be; and, of course, what word you want to rhyme.
+.PP
+Uses the CMUDict pronunciation dictionary produced by
+Carnegie Mellon University and released for public use.
+.SH OPTIONS
+.TP
+.BR \-V
+Print version and licensing information, then exit
+successfully.
+.TP
+.BR \-i
+Return imperfect rhymes as well as perfect rhymes.  By
+default, imperfect rhymes are \fInot\fR returned.
+.TP
+.BR \-n\ [number\ of\ syllables\ to\ rhyme]
+Tells \fBrhydict\fR how many syllables you'd like to make
+sure rhyme.  E.g., "rocking" and "telling" rhyme in their
+last syllable; "rocking" and "blocking" rhyme in two.  By
+default, this is \fI\fR.
+.TP
+.BR \-l\ [length\ of\ words\ to\ return]
+Tells \fBrhydict\fR to return words with this nuymber of
+syllables.  E.g., \fI-l 3\fR will tell \fBrhydict\fR to
+return only words with three syllables.  A value of \fI0\fR
+ius the default; this means that words of any length will be
+returned.
+.SH ERRORS
+.PP
+\fBrhydict\fR emits fairly specific error codes when things
+go wrong.  Successful completion is returned to the
+environment as \fI0\fR.
+.TP
+.BR 1
+You gave \fBrhydict\fR an option that it doesn't recognize.
+.TP
+.BR 2
+You supplied \fBrhydict\fR an option which requires an
+argument, but didn't send it an argument.  E.g., you said
+\fB\-l\fR, but didn't say what you wanted the length of
+returned words to be.
+.TP
+.BR 3
+There's insufficient memory for something that \fBrhydict\fR
+needs to do.
+.TP
+.BR 4
+You didn't give \fBrhydict\fR a word to rhyme.
+.TP
+.BR 5
+\fBrhydict\fR doesn't have the word that you want to rhyme
+in its dictionary.
+.SH BUGS
+.PP
+I'm sure there are some; but I haven't seen any yet.
+.SH AUTHOR
+Donald P. Goodman III <dgoodmaniii at gmail dot com>

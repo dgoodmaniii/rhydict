@@ -20,6 +20,7 @@ extern prondict dict[];
 /* option variables */
 int numsyllmatch = 1;
 int perfrhyme = 1;	/* 0 if imperfect rhyme is desired, 1 if not */
+int sylllen = 0;
 
 int main(int argc, char **argv)
 {
@@ -48,6 +49,19 @@ int main(int argc, char **argv)
 				"is essentially public\ndomain, with no "
 				"restrictions on its use.\n");
 			exit(SUCCESS);
+			break;
+		case 'l':
+			for (i = 0; optarg[i] != '\0'; ++i) {
+				if (!isdigit(optarg[i]))
+					break;
+			}
+			if (i == strlen(optarg)) {
+				sylllen = atoi(optarg);
+			} else {
+				fprintf(stderr,"rhydict:  error:  argument of "
+					"\"-l\" must be an integer; value entered was "
+					"\"%s\"\n",optarg);
+			}
 			break;
 		case 'n':
 			for (i = 0; optarg[i] != '\0'; ++i) {
@@ -129,6 +143,10 @@ int compwords(char **s, int numsylls)
 	char *pronword;
 
 	for (i = 0; strcmp(dict[i].pron,"00"); ++i) {
+		count_sylls(dict[i].pron);
+		if ((sylllen != 0) && (count_sylls(dict[i].pron) != sylllen)) {
+			continue;
+		}
 		numphones = 0;
 		len = strlen(dict[i].pron);
 		pronword = malloc((len * sizeof(char)) + 1);
@@ -146,8 +164,7 @@ int compwords(char **s, int numsylls)
 
 int do_compare(char **s, char **t, int numsylls, char *r)
 {
-	int i;
-	int j = 1;
+	int i; int j = 1;
 
 	for (i = 0; s[i] != NULL; ++i); --i;
 	while (!strcmp(s[i],t[numsylls])) {
@@ -175,6 +192,26 @@ int strip_stress(char *s)
 			s[i] = '\0';
 	}
 	return 0;
+}
+
+int count_sylls(char *s)
+{
+	int i; int ct;
+	char *token;
+	char *t;
+
+	t = malloc(strlen(s) + 2);
+	strcpy(t,s);
+	ct = 0;
+	token = strtok(t," ");
+	while (token != NULL) {
+		strip_stress(token);
+		if (isvowel(token) == 0)
+			++ct;
+		token = strtok(NULL," ");
+	}
+	free(t);
+	return ct;
 }
 
 /* returns 0 if it's a vowel, 1 if not */
