@@ -10,6 +10,7 @@ rhydict \- a command-line rhyming dictionary
 [\fB\-i\fR]
 [\fB\-n\fR \fInumber of syllables to rhyme\fR]
 [\fB\-l\fR \fIlength of words to return\fR]
+[\fB\-s\fR \fIseparation character\fR]
 .SH DESCRIPTION
 .B rhydict
 A simple command-line rhyming dictionary.  Options for how
@@ -27,7 +28,16 @@ successfully.
 .TP
 .BR \-i
 Return imperfect rhymes as well as perfect rhymes.  By
-default, imperfect rhymes are \fInot\fR returned.
+default, imperfect rhymes are \fInot\fR returned.  Note that
+this only rhymes the vowel, not the consonant; so the number
+of results will likely be \fIvery\fR large.
+.TP
+.BR \-s\ [separation\ character]
+Tells \fBrhydict\fR which character to use to separate each
+result.  Use the string "newline" (e.g., \fI-s "newline"\fR)
+for a newline.  Defaults to a single space.  Note that, if
+you give a multi-character string, only the first character
+will be used.
 .TP
 .BR \-n\ [number\ of\ syllables\ to\ rhyme]
 Tells \fBrhydict\fR how many syllables you'd like to make

@@ -21,6 +21,7 @@ extern prondict dict[];
 int numsyllmatch = 1;
 int perfrhyme = 1;	/* 0 if imperfect rhyme is desired, 1 if not */
 int sylllen = 0;
+char sepchar = ' ';
 
 int main(int argc, char **argv)
 {
@@ -33,7 +34,7 @@ int main(int argc, char **argv)
 	char **syllables;
 
 	opterr = 0;
-	while ((c = getopt(argc,argv,"Vn:iw:l:")) != -1) {
+	while ((c = getopt(argc,argv,"Vn:iw:l:s:")) != -1) {
 		switch (c) {
 		case 'V':
 			printf("rhydict v0.9\n");
@@ -49,6 +50,12 @@ int main(int argc, char **argv)
 				"is essentially public\ndomain, with no "
 				"restrictions on its use.\n");
 			exit(SUCCESS);
+			break;
+		case 's':
+			if (!strcmp(optarg,"newline"))
+				sepchar = '\n';
+			else
+				sepchar = optarg[0];
 			break;
 		case 'l':
 			for (i = 0; optarg[i] != '\0'; ++i) {
@@ -115,6 +122,7 @@ int main(int argc, char **argv)
 	for (i = 0; syllables[i] != NULL; ++i)
 		free(syllables[i]);
 	free(syllables);
+	printf("\n");
 	return 0;
 }
 
@@ -154,7 +162,10 @@ int compwords(char **s, int numsylls)
 		syllables = malloc(36 * sizeof(char *));
 		numphones = syllabify(syllables,pronword);
 		k = numsylls;
-		do_compare(syllables,s,numsylls,dict[i].word);
+		if (perfrhyme == 1)
+			perf_rhyme(syllables,s,numsylls,dict[i].word);
+		else
+			imperf_rhyme(syllables,s,numsylls,dict[i].word);
 		free(pronword);
 		for (j = 0; syllables[j] != NULL; ++j)
 			free(syllables[j]);
@@ -162,7 +173,29 @@ int compwords(char **s, int numsylls)
 	}
 }
 
-int do_compare(char **s, char **t, int numsylls, char *r)
+int imperf_rhyme(char **s, char **t, int numsylls, char *r)
+{
+	int i; int j = 1;
+
+	for (i = 0; s[i] != NULL; ++i); --i;
+	while ((i >= 0) && (numsylls >= 0)) {
+		if ((isvowel(s[i]) == 0) && (!strcmp(s[i],t[numsylls]))) {
+			if (j == numsyllmatch) {
+				printf("%s%c",r,sepchar);
+				break;
+			} else {
+				++j;
+			}
+		}
+		if ((i == 0) || (numsylls == 0)) {
+			break;
+		} else {
+			i--; numsylls--;
+		}
+	}
+}
+
+int perf_rhyme(char **s, char **t, int numsylls, char *r)
 {
 	int i; int j = 1;
 
@@ -170,7 +203,7 @@ int do_compare(char **s, char **t, int numsylls, char *r)
 	while (!strcmp(s[i],t[numsylls])) {
 		if (isvowel(s[i]) == 0) {
 			if (j == numsyllmatch) {
-				printf("%s\n",r);
+				printf("%s%c",r,sepchar);
 				break;
 			} else {
 				++j;
