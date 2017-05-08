@@ -1,0 +1,141 @@
+/* +AMDG  This document was begun on 8 May 1201, a Feria,
+ * and it is humbly dedicated to the Immaculate Heart of
+ * Mary for her prayers, and to the Sacred Heart of Jesus
+ * for His mercy. */
+
+/******************************************/
+/* include magin, padding, and border     */
+/******************************************/
+
+* {
+	box-sizing:  border-box;
+}
+
+/******************************************/
+/* reset browser style                    */
+/******************************************/
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5,
+h6, p, blockquote, pre, a, abbr, address, cite, code, del,
+dfn, em, img, ins, kbd, q, s, samp, small, strong, sub, sup,
+var, b, u, i, dl, dt, dd, ol, ul, li, fieldset, form, label,
+legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, figure, figcaption,
+footer, header, hgroup, menu, nav, output, ruby, section,
+summary, time, mark, audio, video {
+	margin:  0;
+	padding:  0;
+	border:  0;
+	font-size:  100%;
+	vertical-align:  baseline;
+}
+article, aside, details, figcaption, figure, footer, header,
+hgroup, menu, nav, section, main {
+	display:  block;
+}
+
+.amdg {
+	text-align:  center;
+	font-size:  65%;
+}
+header {
+	background:  linear-gradient(to bottom right,#000077,#0000ff);
+	color:  #ffff00;
+}
+header h1 {
+	font-size:  200%;
+	padding-top:  5%;
+	padding-bottom:  5%;
+	padding-left:  1%;
+	padding-right:  1%;
+}
+
+main {
+	padding:  6px;
+	background-color:  #fafafa;
+	color:  black;
+	text-align:  justify;
+}
+main p {
+	margin-top:  1em;
+}
+main h1 {
+	font-size:  200%;
+	color:  #0000ff;
+	text-shadow:  1px 1px 1px #000000;
+}
+main h2 {
+	padding-top:  1em;
+	font-size:  150%;
+	color:  #0000ff;
+	text-shadow:  1px 1px 1px #000000;
+}
+
+nav {
+	text-align:  center;
+	color:  #0000ff;
+	border-style:  solid;
+	border-top-width:  2px;
+	border-bottom-width:  2px;
+	border-color:  black;
+	background-color:  #ffff00;
+}
+nav ul {
+	list-style:  none;
+	padding:  3px;
+}
+nav li {
+	min-width:  25%;
+	background-color:  #0000ff;
+	border:  2pt;
+	border-style:  solid;
+	border-color:  black;
+	display:  inline-block;
+	padding:  3px;
+}
+nav li a {
+	text-decoration:  none;
+	color:  #ffff00;
+}
+
+footer {
+	padding:  6px;
+	font-size:  75%;
+	text-align:  center;
+	background:  linear-gradient(to bottom right,#000077,#0000ff);
+	color:  #ffff00;
+}
+footer a {
+	color:  #ffff00;
+}
+footer ul {
+	list-style:  none;
+	padding:  3px;
+}
+footer li {
+	min-width:  25%;
+	border:  2pt;
+	border-style:  solid;
+	border-color:  black;
+	display:  inline-block;
+	padding:  3px;
+}
+footer li a {
+	text-decoration:  none;
+	color:  #ffff00;
+}
+
+.code {
+	margin-top:  1em;
+	margin-bottom:  0em;
+	background-color:  black;
+	color:  green;
+	padding:  6px;
+}
+
+.scode {
+	background-color:  black;
+	color:  green;
+	padding-left:  3px;
+	padding-right:  3px;
+}

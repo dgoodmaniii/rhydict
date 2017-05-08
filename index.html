@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- +AMDG  This document was begun on 8 May 1201, a Feria,
+and it is humbly dedicated to the Immaculate Heart of
+Mary for her prayers, and to the Sacred Heart of Jesus
+for His mercy. -->
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="description" content="rhydict, a command-line
+		rhyming dictionary; description, links to code, and
+		documentation" />
+	<title>rhydict:  A Command-Line Rhyming Dictionary</title>
+	<link rel="stylesheet" type="text/css" href="rhystyle.css" />
+	<link rel="license" 
+		href="https://creativecommons.org/licenses/by-sa/2.0/" />
+</head>
+
+<body>
+	<header>
+	<div class="amdg">+<br />AMDG</div>
+	<h1>rhydict:  A Command-Line Rhyming Dictionary</h1>
+	</header>
+
+
+<nav>
+	<ul>
+		<li><a href="#intro">Introduction</a></li>
+		<li><a href="#documentation">Documentation</a></li>
+	</ul>
+</nav>
+
+<main>
+
+<h1>Rhyming without having to go online</h1>
+
+<p>Tired of having to go out to some slow, ad-ridden
+Javascript monstrosity just to get a few rhymes when your
+mind is blocked?  rhydict is your answer!</p>
+
+<a name="intro"></a>
+<h2>About rhydict</h2>
+
+<p>rhydict is a command-line rhyming dictionary, suitable
+for poets and whomever else wants to try to rhyme words.  It
+utilizes the excellent <a
+	href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">CMU
+	Pronouncing Dictionary</a> from Carnegie Mellon
+University, which is generously made available for public
+use with almost no restrictions.</p>
+
+<p>rhydict strives for simplicity in execution while
+maintaing as much power as one can expect from such a simple
+application.  As such, it provides sensible defaults
+(returning only perfect rhymes on the last syllable, with
+results separated by single spaces) while allowing options
+for imperfect rhymes; for rhyming multiple syllables; for
+limiting results only to words of a given number of
+syllables; and for arbitrary characters to separate
+results.</p>
+
+<p>rhydict should satisfy the needs of most poets (that is
+the reason it was written).  If you have any suggestions for
+improvement, please let me know; you can find contact
+information with the program's <a
+ href="https://www.github.com/dgoodmaniii/rhydict">source</a>.</p>
+
+<a name="documentation"></a>
+<h2>Documentation</h2>
+
+<p>Using rhydict is simple.  In your favorite terminal
+emulator, just run the program, creatively named <span
+	class="scode">rhydict</span>.  Give rhydict the word you
+want to rhyme with the <span class="scode">-w</span> option:
+</p>
+
+<pre class="code">
+$&gt; rhydict -w"orange"
+</pre>
+
+<p>Strictly speaking, the quotation marks here are
+unnecessary, but it's good practice to make it clear what
+part of your command line is the rhyming word.  You'll see
+output like this:</p>
+
+<pre class="code">
+$&gt; rhydict -w"orange"
+alonge bunge challenge counterchallenge expunge grunge lozenge lunge orange plunge runge scavenge sponge younge 
+</pre>
+
+<p>Notice that each word is separated from the others by a
+single space.  If you want to use a different character, let
+rhydict know by using the <span class="scode">-s</span>
+option:</p>
+
+<pre class="code">
+$&gt; rhydict -s"|" -w"orange"
+alonge|bunge|challenge|counterchallenge|expunge|grunge|lozenge|lunge|orange|plunge|runge|scavenge|sponge|younge|
+</pre>
+
+<p>This, obviously, gives you the same list, but separated
+by a pipe character rather than spaces.  Note that this is
+only a single character; if you give rhydict a
+multi-character string, only the first character will be
+used.  If you want to use a newline, say <span
+	  class="scode">-s"newline"</span>.</p>
+
+<p>Now, maybe you'd like to find a word that rhymes on more
+than just the last syllable; maybe you'd like to rhyme
+<em>two</em> syllables.  You can do so by using the <span
+	class="scode">-n</span> option.  You can match any number
+of syllables you'd like, provided that the word you gave it
+has at least that number of syllables:</p>
+
+<pre class="code">
+$&gt; rhydict -n3 -w"syllable"
+billable syllable
+</pre>
+
+<p>Matching with less than three syllales will produce more
+rhymes:</p>
+
+<pre class="code">
+$&gt; rhydict -n2 -w"syllable"
+abominable acceptable acceptable(2)...
+</pre>
+
+<p>A great number, in fact, since "syllable" ends in two
+very common terminal sounds.</p>
+
+<p>You may wish only to find matches which are a certain
+number of syllables long; you can tell rhydict this using
+the <span class="scode">-l</span> option:</p>
+
+<pre class="code">
+$&gt; rhydict -n2 -w"syllable"
+abominable acceptable acceptable(2)...
+</pre>
+
+<p>Finally, rhydict allows you to find <em>imperfect</em>
+rhymes as well as perfect ones.  These are rhymes in which
+only the vowel sounds are the same, not the consonants.  Use
+the <span class="scode">-i</span> option for this:</p>
+
+<pre class="code">
+$&gt; rhydict -i -n2 -w"billing"
+</pre>
+
+<p>However, be aware the imperfect rhymes will likely give
+you <em>lots</em> of results; it's unlikely to be
+particularly useful to you.</p>
+
+<p>That's all there is to rhydict; happy rhyming!</p>
+
+
+
+</main>
+
+<footer>
+	<ul>
+		<li><a href="https://github.com/dgoodmaniii/rhydict">To
+		the source!</a></li>
+		<li><a
+		 href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">The
+		 CMU Pronouncing Dictionary</a></li>
+	</ul>
+	&copy;  1201 (2017) Goretti Publications<br />
+<a rel="license" 
+	href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img
+	alt="Creative Commons License BY-SA" style="border-width:0"
+	src="https://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />
+The text of this site is licensed under the<br /> <a rel="license"
+href="http://creativecommons.org/licenses/by-sa/3.0/us/">Creative
+Commons Attribution-ShareAlike 3.0 United States
+License</a>.
+</footer>
+</body>
+</html>
