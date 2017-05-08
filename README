@@ -1,0 +1,11 @@
+rhydict
+
+A simple rhyming dictionary which operates from the command
+line.  Uses the CMUDict pronunciation dictionary from
+Carnegie-Mellon University, which is essentially public
+domain, with no restrictions on its use.
+
+Contains options for number of syllables to rhyme; length of
+the rhymed words by number of syllables; whether imperfect
+rhymes are also desired; and what character you'd like to
+separate results.  See the man page for details.

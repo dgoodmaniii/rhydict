@@ -5,11 +5,14 @@
 
 prefix ?= /usr/local
 bindir ?= $(prefix)/bin
+mandir ?= $(prefix)/share/man
 binmode = 755
 dirmode = 755
-IDIR =../include
+manmode = 644
 CC = gcc
+objects = main.o data.o
 binobjects = rhydict
+docobjects = rhydict.1
 
 all: bin
 
@@ -25,18 +28,19 @@ data.o : data.c data.h
 bin: $(binobjects)
 
 installbin: $(binobjects)
-	for obj in $(binobjects) ; do \
-		install -m $(binmode) $${obj} $(bindir) ; done
+	install -m $(binmode) $(binobjects) $(bindir)
 
-install: installbin
+installdoc:
+	install -m $(manmode) $(docobjects) $(mandir)
+
+install: installbin installdoc
 
 uninstall:
-	for bin in $(binobjects) ; do \
-		unlink $(bindir)/$${bin} ; done
+	unlink $(bindir)/$(binobjects)
+	unlink $(mandir)/$(docobjects)
 
 clean:
 	for obj in $(binobjects) $(objects) ; do \
 		rm -f $${obj} ; done
 
-.PHONY: bin clean install installbin uninstall
-
+.PHONY: bin clean install installbin uninstall installdocs
