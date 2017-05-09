@@ -25,7 +25,7 @@
 
 prefix ?= /usr/local
 bindir ?= $(prefix)/bin
-mandir ?= $(prefix)/share/man
+mandir ?= $(prefix)/share/man/man1/
 binmode = 755
 dirmode = 755
 manmode = 644
